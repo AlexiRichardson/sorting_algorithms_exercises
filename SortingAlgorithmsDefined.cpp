@@ -71,6 +71,7 @@ int main()
 		cout << "T. TreeSort\n";
 		cout << "H. HeapSort\n";
 		cout << "R. RadixSort\n";
+		cout << "L. ShellSort\n";
 		cout << "E. Exit\n";
 		cout << "\nEnter in letter of menu selection: ";
 		cin >> decision;
@@ -172,6 +173,31 @@ int main()
 				}
 				  break;
 
+		case 'R': {
+						std::cout << "\n-------------------------------------------------------------" << endl;
+						auto n2 = sizeof(array5) / sizeof(array5[0]);
+						std::cout << "\nNumber of elements in random number generated array: " << n2 << endl;
+
+						randNumPop(array5);//insert random numbers into radix sort array, size is 50
+						std::cout << "The radix sort array after populating with numbers: \n";
+						for (int i = 0; i < RAND_NUMSIZE; i++) {
+							std::cout << array5[i] << ' ';
+						}
+						cout << endl;
+						//call radix sort
+						radixSort(array5, RAND_NUMSIZE);
+						std::cout << "\nThe radix sort array after sorting: \n";
+						for (int i = 0; i < RAND_NUMSIZE; i++) {
+							std::cout << array5[i] << ' ';
+						}
+						std::cout << "\n-------------------------------------------------------------" << endl;
+
+				}
+				  break;
+		//case 'L': {
+
+
+		//}
 		default: cout << "\nExiting...";
 
 		}
@@ -257,7 +283,7 @@ int findIndexOfLargest(const ItemType theArray[], int size)
 	{
 		//At this point , theArray[indexSoFar] >= all entries in theArray[0..currentIndex -1]
 		if (theArray[currentIndex] > theArray[indexSoFar])
-		{
+		{   
 			indexSoFar = currentIndex;
 		}
 	}
@@ -456,9 +482,63 @@ void quickSort(ItemType theArray[], int first, int last) {
 
 }
 template<typename ItemType>
-void radixSort(ItemType theArray[], int n, int d) {
+void radixSort(ItemType theArray[], int n) {//to sort numeric data the radix sort treats a number as a character string
+	//Sorts n d-digit integers in the array theArray
+	//digitPos <- maximum place value of digits in the largest element (units, 10, 100, 1000) 
+	int max = getMax(theArray, n);
 
+	for (int digitPos = 1; max / digitPos > 0; digitPos *= 10) {
 
+		countingSort(theArray, n, digitPos);
+	}
+		
+		
+}
+//Function to get largest element from an array - in terms of radices values 
+template<typename ItemType>
+int getMax(ItemType theArray[], int n) {
+	int maxVal = theArray[0];
+	for (int i = 1; i < n; i++) {
+		if (theArray[i] > maxVal)
+			maxVal = theArray[i];
+	}
+	return maxVal;
+}
 
+template<typename ItemType>
+void countingSort(ItemType theArray, int n, int d) {
+	
+	const int baseMax = 10;
+	//Initialize 10 groups to empty
+	ItemType groupsArray[10] = { 0 };//radix or base of decimal number system is 10
+	ItemType outputArray[n];
+	
+	for (int i = 0; i < baseMax; i++)
+		groupsArray[i] = 0;//initialize a counter for each group to 0
+	//digit places index counter 
+	for (int i = 0; i < n; i++) {
+		groupsArray[(theArray[i] / d ) % 10]++;
+	}
+	//cumulative counter dictates index of element in output array 
+	for (int i = 1; i < baseMax; i++) {
+		groupsArray[i] += groupsArray[i - 1];
+	}
+	//put sorted elements into output array from input array
+	for (int i = n - 1; i >= 0; i--) {
+		outputArray[groupsArray[(theArray[i] / d) % 10] - 1] = theArray[i];
+		groupsArray[(theArray[i] / d) % 10]--;//decrement count of occurences within accessed index in array 
+	}
+
+	for (int i = 0; i < n; i++) {
+		theArray[i] = outputArray[i];
+	}
+	
+}
+
+template<typename ItemType>
+void printArray(ItemType theArray[], int size) {
+	for (int i = 0; i < size; i++)
+		cout << theArray[i] << " ";
+	cout << endl; 
 }
 
