@@ -38,8 +38,10 @@ void randNumPop(ItemType theArray[]);
 //void treeSort();
 //template<typename ItemType>
 //void heapSort();
+//template<typename ItemType>
+//void shellSort()
 template<typename ItemType>
-void radixSort(ItemType theArray[], int n, int d);
+void radixSort(ItemType theArray[], int n);
 
 
 
