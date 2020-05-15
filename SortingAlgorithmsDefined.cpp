@@ -42,6 +42,8 @@ void randNumPop(ItemType theArray[]);
 //void shellSort()
 template<typename ItemType>
 void radixSort(ItemType theArray[], int n);
+template<typename ItemType>
+int shellSort(ItemType theArray[], int N);
 
 
 
@@ -542,5 +544,11 @@ void printArray(ItemType theArray[], int size) {
 	for (int i = 0; i < size; i++)
 		cout << theArray[i] << " ";
 	cout << endl; 
+}
+
+template<typename ItemType>
+int shellSort(ItemType theArray[], int N) {
+
+	
 }
 
